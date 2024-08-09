@@ -3168,7 +3168,7 @@ class PlayState extends MusicBeatState
 
 				var anas:Array<Ana> = [null,null,null,null];
 
-				or (i in 0...pressArray.length)
+				for (i in 0...pressArray.length)
 					if (pressArray[i])
 						anas[i] = new Ana(Conductor.songPosition, null, false, "miss", i);
 
