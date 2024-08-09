@@ -46,6 +46,8 @@ class CustomControlsState extends MusicBeatState //Code desenvolvido dois anos a
 
 	var bindbutton:FlxButton;
 
+	var config:Config = new Config();
+
 	public function new()
 	{
 		super();
@@ -60,7 +62,8 @@ class CustomControlsState extends MusicBeatState //Code desenvolvido dois anos a
 		bg.antialiasing = true;
 
 		// load curSelected
-		curSelected = Config.getcontrolmode();
+		
+		curSelected = config.getcontrolmode();
 
 
 		//pad
@@ -109,7 +112,7 @@ class CustomControlsState extends MusicBeatState //Code desenvolvido dois anos a
 
 		var savebutton = new FlxUIButton((exitbutton.x + exitbutton.width + 25),25,"Sair e Salvar",() -> {
 			save();
-			FlxG.switchState(new MikuOptions());
+			FlxG.switchState(new OptionsMenu());
 		});
 		savebutton.resize(250,50);
 		savebutton.setLabelFormat("VCR OSD Mono",24,FlxColor.BLACK,"center");
@@ -163,7 +166,7 @@ class CustomControlsState extends MusicBeatState //Code desenvolvido dois anos a
 		var androidback:Bool = false;
 		#end
 		if (exitbutton.justReleased || androidback){
-			FlxG.switchState(new MikuOptions());
+			FlxG.switchState(new OptionsMenu());
 		}
 
 		for (touch in FlxG.touches.list){
@@ -322,7 +325,7 @@ class CustomControlsState extends MusicBeatState //Code desenvolvido dois anos a
 
 	function save() {
 
-		Config.setcontrolmode(curSelected);
+		config.setcontrolmode(curSelected);
 
 		if (curSelected == 3){
 			savecustom();
@@ -334,12 +337,12 @@ class CustomControlsState extends MusicBeatState //Code desenvolvido dois anos a
 
 		//Config.setdata(55);
 
-		Config.savecustom(_pad);
+		config.savecustom(_pad);
 	}
 
 	function loadcustom():Void{
 		//load pad
-		_pad = Config.loadcustom(_pad);
+		_pad = config.loadcustom(_pad);
 
 	}
 
