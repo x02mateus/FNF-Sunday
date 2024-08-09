@@ -220,6 +220,10 @@ class StoryMenuState extends MusicBeatState
 
 		trace("Line 165");
 
+		#if mobileC
+		addVirtualPad(FULL, A_B);
+		#end
+
 		super.create();
 	}
 
@@ -339,7 +343,7 @@ class StoryMenuState extends MusicBeatState
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				FlxG.camera.fade(FlxColor.BLACK, 1, false, function(){
-						FlxG.switchState(new VideoState('assets/videos/presunday/vid.webm', loadplayState));
+						FlxG.switchState(new VideoState('assets/videos/sunday', new PlayState()));
 				});
 			});
 		}

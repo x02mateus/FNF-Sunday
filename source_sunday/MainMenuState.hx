@@ -14,7 +14,6 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import io.newgrounds.NG;
 import lime.app.Application;
 import openfl.filters.BlurFilter;
 
@@ -67,12 +66,6 @@ class MainMenuState extends MusicBeatState
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
-		
-		#if shaders
-		FlxG.camera.setFilters([ShadersHandler.chromaticAberration, ShadersHandler.radialBlur]);
-		ShadersHandler.setChrome(0);
-		//ShadersHandler.setBlur(0,0);
-		#end
 		persistentUpdate = persistentDraw = true;
 
 		bg.scrollFactor.x = 0;
@@ -149,6 +142,10 @@ class MainMenuState extends MusicBeatState
 						FlxTween.tween(spr, {alpha:1}, 0.2);
 					});
 
+		#if mobileC
+		addVirtualPad(UP_DOWN, A_B);
+		#end
+
 		super.create();
 	}
 
@@ -179,13 +176,13 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 
-			if (FlxG.keys.justPressed.UP)
+			if (controls.UP_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
-			if (FlxG.keys.justPressed.DOWN)
+			if (controls.DOWN_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);
@@ -250,10 +247,6 @@ class MainMenuState extends MusicBeatState
 		}
 
 		super.update(elapsed);
-		#if shaders
-		ShadersHandler.setChrome(FlxG.random.int(2,6)/1000);
-		ShadersHandler.setRadialBlur(640, 360,  FlxG.random.float(0.001, 0.01));
-		#end
 		menuItems.forEach(function(spr:FlxSprite)
 		{
 			spr.screenCenter(X);
@@ -262,7 +255,6 @@ class MainMenuState extends MusicBeatState
 	
 	function goToState()
 	{
-		//ShadersHandler.setBlur(0,bl);
 							switch(optionShit[curSelected]){
 								case "freeplay":
 									FlxTween.color(bg, 0.5,bg.color,FreeplayState.bgcol);

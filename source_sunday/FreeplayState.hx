@@ -196,6 +196,10 @@ class FreeplayState extends MusicBeatState
 		 //var flxShit:FlxSprite = new FlxSprite().loadGraphic("WHORESHIT");
 		// add(flxShit);
 		// flxShit.scrollFactor.set();
+
+		#if mobileC
+		addVirtualPad(FULL, A_B);
+		#end
 		 
 		super.create();
 	}
@@ -341,11 +345,6 @@ class FreeplayState extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		#if !switch
-		// NGio.logEvent('Fresh');
-		#end
-
-		// NGio.logEvent('Fresh');
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSelected += change;
