@@ -136,6 +136,13 @@
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
+	<!-- Akways enable Null Object Reference check for crash dialog -->
+	<haxedef name="HXCPP_CHECK_POINTER" />
+	<haxedef name="HXCPP_STACK_LINE" />
+
+	<!--Allow working memory greater than 1GB-->
+	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
+
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->

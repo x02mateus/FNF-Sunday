@@ -1,8 +1,11 @@
 package;
 
+import lime.app.Application;
+import haxe.CallStack.StackItem;
+import haxe.CallStack;
+import openfl.events.UncaughtErrorEvent;
 import openfl.display.BlendMode;
 import openfl.text.TextFormat;
-import openfl.display.Application;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxGame;
@@ -13,6 +16,8 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
+using StringTools;
+
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -21,7 +26,7 @@ class Main extends Sprite
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	
 	
-	var framerate:Int = 60; // How many frames per second the game should run at.
+	var framerate:Int = 120; // How many frames per second the game should run at.
 	
 	
 	
@@ -77,21 +82,26 @@ class Main extends Sprite
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
-
-		#if !debug
-		initialState = WarningState;
-		#end
 		#if web
 		framerate = 60;
 		#end
 
+		#if mobile
+		gameWidth = 1280;
+		gameHeight = 720;
+		zoom = 1;
+		#end
+
+
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+
 		addChild(game);
-		
 		
 		fpsCounter = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
 		toggleFPS(FlxG.save.data.fps);
+
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 	}
 
 	var game:FlxGame;
@@ -121,4 +131,50 @@ class Main extends Sprite
 	{
 		return fpsCounter.currentFPS;
 	}
+
+	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
+	// very cool person for real they don't get enough credit for their work
+	function onCrash(e:UncaughtErrorEvent):Void
+		{
+			var errMsg:String = "";
+			var path:String;
+			var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+			var dateNow:String = Date.now().toString();
+	
+			dateNow = dateNow.replace(" ", "_");
+			dateNow = dateNow.replace(":", "'");
+	
+			#if desktop
+			path = "./crash/" + "PsychEngine_" + dateNow + ".txt";
+			#end
+	
+			for (stackItem in callStack)
+			{
+				switch (stackItem)
+				{
+					case FilePos(s, file, line, column):
+						errMsg += file + " (line " + line + ")\n";
+					default:
+						Sys.println(stackItem);
+				}
+			}
+	
+			errMsg += "\nErro do crash: " + e.error;
+	
+			#if desktop
+			if (!FileSystem.exists("./crash/"))
+				FileSystem.createDirectory("./crash/");
+	
+			File.saveContent(path, errMsg + "\n");
+			#end
+	
+			Sys.println(errMsg);
+	
+			#if desktop
+			Sys.println("Crash dump saved in " + Path.normalize(path));
+			#end
+	
+			Application.current.window.alert(errMsg, "Erro!");
+			Sys.exit(1);
+		}
 }
