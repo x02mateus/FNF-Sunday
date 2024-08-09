@@ -90,7 +90,6 @@ class PlayState extends MusicBeatState
 	public static var goods:Int = 0;
 	public static var sicks:Int = 0;
 	public static var anti_seizure:Bool = false;
-	public static var useVideo:Bool = false;
 	public static var dontCheck:Bool = false;
 	public static var campaignMisses:Int = 0;
 
@@ -116,7 +115,6 @@ class PlayState extends MusicBeatState
 
 	private var vocals:FlxSound;
 	private var chromOn:Bool = false;
-	private var removedVideo:Bool = false;
 
 	public static var dad:Character;
 	public static var gf:Character;
@@ -284,8 +282,6 @@ class PlayState extends MusicBeatState
 			case 'dad-battle': songLowercase = 'dadbattle';
 			case 'philly-nice': songLowercase = 'philly';
 		}
-		
-		removedVideo = false;
 
 		#if windows
 		// Making difficulty text for Discord Rich Presence.
@@ -500,13 +496,6 @@ class PlayState extends MusicBeatState
 
 					var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay','week4'));
 					overlayShit.alpha = 0.5;
-					// add(overlayShit);
-
-					// var shaderBullshit = new BlendModeEffect(new OverlayShader(), FlxColor.RED);
-
-					// FlxG.camera.setFilters([new ShaderFilter(cast shaderBullshit.shader)]);
-
-					// overlayShit.shader = shaderBullshit;
 
 					var limoTex = Paths.getSparrowAtlas('limo/limoDrive','week4');
 
@@ -691,44 +680,6 @@ class PlayState extends MusicBeatState
 					bg.scrollFactor.set(0.8, 0.9);
 					bg.scale.set(6, 6);
 					add(bg);
-
-					/* 
-							var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
-							bg.scale.set(6, 6);
-							// bg.setGraphicSize(Std.int(bg.width * 6));
-							// bg.updateHitbox();
-							add(bg);
-							var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolFG'));
-							fg.scale.set(6, 6);
-							// fg.setGraphicSize(Std.int(fg.width * 6));
-							// fg.updateHitbox();
-							add(fg);
-							wiggleShit.effectType = WiggleEffectType.DREAMY;
-							wiggleShit.waveAmplitude = 0.01;
-							wiggleShit.waveFrequency = 60;
-							wiggleShit.waveSpeed = 0.8;
-						*/
-
-					// bg.shader = wiggleShit.shader;
-					// fg.shader = wiggleShit.shader;
-
-					/* 
-								var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
-								var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
-								// Using scale since setGraphicSize() doesnt work???
-								waveSprite.scale.set(6, 6);
-								waveSpriteFG.scale.set(6, 6);
-								waveSprite.setPosition(posX, posY);
-								waveSpriteFG.setPosition(posX, posY);
-								waveSprite.scrollFactor.set(0.7, 0.8);
-								waveSpriteFG.scrollFactor.set(0.9, 0.8);
-								// waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
-								// waveSprite.updateHitbox();
-								// waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
-								// waveSpriteFG.updateHitbox();
-								add(waveSprite);
-								add(waveSpriteFG);
-						*/
 			}
 			case 'garage':
 				{
@@ -2770,19 +2721,12 @@ class PlayState extends MusicBeatState
 		
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN,handleInput);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP,releaseInput);
-		if (useVideo)
-			{
-				//GlobalVideo.get().stop();
-				//FlxG.stage.window.onFocusOut.remove(focusOut);
-				//FlxG.stage.window.onFocusIn.remove(focusIn);
-				//PlayState.instance.remove(PlayState.instance.videoSprite);
-			}
 
 		if (isStoryMode)
 			campaignMisses = misses;
 
 		if (!loadRep)
-			//rep.SaveReplay(saveNotes, saveJudge, replayAna);
+			trace("sexo");
 		else
 		{
 			FlxG.save.data.botplay = false;
